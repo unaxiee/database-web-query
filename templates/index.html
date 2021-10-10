@@ -3,8 +3,12 @@
 
 <html >
   <head>
-    <link rel="icon" href="data:,">
+
     <meta charset="utf-8">
+
+    <link rel="icon" href="data:,">
+
+    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css">
 
     <title>Database Query</title>
 
@@ -12,13 +16,15 @@
 
       table {
         border-collapse: collapse;
-        width: 100%;
+        width: 90%;
         border: 1px solid black;
+        margin-left: 50px;
       }
 
       th, td {
         text-align: left;
         border: 1px solid black;
+        padding-left: 10px;
       }
 
       tr:nth-child(even) {
@@ -30,6 +36,7 @@
       }
 
       input, label{
+        margin-left: 10px;
         margin-bottom: 10px;
       }
 
@@ -48,6 +55,7 @@
         color: black;
         border: 2px solid #4CAF50; /* Green */
         transition-duration: 0.4s;
+        margin-left: 50px;
       }
 
       input[type=submit]:hover {
@@ -58,6 +66,10 @@
       header {
         padding-top: 5px;
         padding-bottom: 5px;
+      }
+
+      p.c1 {
+        margin-left: 50px;
       }
 
     </style>
@@ -105,9 +117,7 @@
           css('display','table-row').animate({opacity:1}, 300);
         });
       });
-    </script> -->
-
-    <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.css">
+    </script>  -->
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js" type="text/javascript"></script>
 
@@ -202,53 +212,53 @@
           var startAt = page * perPage,
           endOn = startAt + perPage;
 
-        // Added few lines from here start
+          // Added few lines from here start
 
-        $('.pg').hide();
-        $(".ell").remove();
-        var prevpg = $("#pg" + page).show();
-        var currpg = $("#pg" + (page + 1)).show();
-        var nextpg = $("#pg" + (page + 2)).show();
-        if (prevpg.length == 0) nextpg = $("#pg" + (page + 3)).show();
-        if (prevpg.length == 1 && nextpg.length == 0) {
-          prevpg = $("#pg" + (page - 1)).show();
+          $('.pg').hide();
+          $(".ell").remove();
+          var prevpg = $("#pg" + page).show();
+          var currpg = $("#pg" + (page + 1)).show();
+          var nextpg = $("#pg" + (page + 2)).show();
+          if (prevpg.length == 0) nextpg = $("#pg" + (page + 3)).show();
+          if (prevpg.length == 1 && nextpg.length == 0) {
+            prevpg = $("#pg" + (page - 1)).show();
+          }
+          if (curr > 5) {
+            if (page > 1) prevpg.before($("<li class='ell'>").html("<span>...</span>"));
+            if (page < curr - 2) nextpg.after($("<li class='ell'>").html("<span>...</span>"));
+          }
+          currpg.addClass("active").siblings().removeClass("active");
+          // Added few lines till here end
+
+
+          children.css('display', 'none').slice(startAt, endOn).show();
+
+          if (page >= 1) {
+            pager.find('.prev_link').show();
+          } else {
+            pager.find('.prev_link').hide();
+          }
+
+          if (page < (numPages - 1)) {
+            pager.find('.next_link').show();
+          } else {
+            pager.find('.next_link').hide();
+          }
+
+          pager.data("curr", page);
+          /*pager.children().removeClass("active");
+          pager.children().eq(page + 1).addClass("active");*/
+
         }
-        if (curr > 5) {
-          if (page > 1) prevpg.before($("<li class='ell'>").html("<span>...</span>"));
-          if (page < curr - 2) nextpg.after($("<li class='ell'>").html("<span>...</span>"));
-        }
-        currpg.addClass("active").siblings().removeClass("active");
-        // Added few lines till here end
-
-
-        children.css('display', 'none').slice(startAt, endOn).show();
-
-        if (page >= 1) {
-          pager.find('.prev_link').show();
-        } else {
-          pager.find('.prev_link').hide();
-        }
-
-        if (page < (numPages - 1)) {
-          pager.find('.next_link').show();
-        } else {
-          pager.find('.next_link').hide();
-        }
-
-        pager.data("curr", page);
-        /*pager.children().removeClass("active");
-        pager.children().eq(page + 1).addClass("active");*/
-
-      }
-    };
+      };
 
     $(document).ready(function(){
 
-    $('#myTable').pageMe({pagerSelector:'#myPager',showPrevNext:true,hidePageNumbers:false,perPage:10});
+      $('#myTable').pageMe({pagerSelector:'#myPager', showPrevNext:true, hidePageNumbers:false, perPage:10});
 
     });
-
     </script>
+
 
     <!--<link rel="stylesheet" href="https://cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css">
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
@@ -268,47 +278,49 @@
 
     <form method="POST" action="">
 
-      <p><b>Please select a database:</b></p>
+      <p class="c1"><b>Please select a database:</b></p>
 
-      <input type="radio" id="mysql" name="database" value="mysql" required checked>
+      <input type="radio" id="mysql" name="database" value="mysql" style="margin-left: 50px" required checked>
       <label for="mysql">MySQL</label><br>
 
-      <input type="radio" id="redshift" name="database" value="redshift">
+      <input type="radio" id="redshift" name="database" value="redshift" style="margin-left: 50px">
       <label for="redshift">Redshift</label>
 
-      <p><b>Please select a dataset:</b></p>
+      <p class="c1"><b>Please select a dataset:</b></p>
 
-      <input type="radio" id="instacart" name="dataset" value="instacart" required checked>
+      <input type="radio" id="instacart" name="dataset" value="instacart" style="margin-left: 50px" required checked>
       <label for="instacart">instacart</label><br>
 
-      <input type="radio" id="instacart_normalized" name="dataset" value="instacart_normalized">
+      <input type="radio" id="instacart_normalized" name="dataset" value="instacart_normalized" style="margin-left: 50px">
       <label for="instacart_normalized">instacart_normalized</label><br><br>
 
-      <label for="query"><b>Please enter your query:</b></label>
+      <label for="query" style="margin-left: 50px"><b>Please enter your query:</b></label>
       <p></p>
-      <textarea id="query" name="query" placeholder="Enter your query here..." cols="100" rows="10" ></textarea>
+      <textarea id="query" name="query" placeholder="Enter your query here..." cols="100" rows="10" style="margin-left: 50px"></textarea>
       <p></p>
       <input type="submit" value="Execute" />
       <!--<button type="submit"><b>Execute</b></button>-->
     </form>
 
-    <p><b>Execution time: {{time}}</b></p>
+    <p class="c1"><b>Execution time: {{time}}</b></p>
 
-    <!-- <table id="table" cellspacing="0" width="100%"> -->
-    <table class="tb_pagination_width">
-   <tbody id="myTable">
-      {% for i in data %}
-      <tr>
-        {% for j in i%}
-        <td> {{j}} </td>
+    <!--<table id="table" cellspacing="0" width="100%">-->
+    <table class="tb_pagination_width" cellspacing="0">
+      <tbody id="myTable">
+        {% for i in data %}
+        <tr>
+          {% for j in i%}
+          <td> {{j}} </td>
+          {% endfor %}
+        </tr>
         {% endfor %}
-      </tr>
-      {% endfor %}
-      <tbody>
+      </tbody>
     </table>
+
     <div class="col-md-12 text-center">
-  <ul class="pagination" id="myPager"></ul>
-</div>     
-  
+      <ul class="pagination" id="myPager"></ul>
+    </nav>
+    </div>
+
   </body>
 </html>
