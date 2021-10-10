@@ -1,3 +1,8 @@
-#data tr {
+/*#data tr {
   display: none;
+}*/
+
+td{
+  background:blue;
+  color:white;
 }
