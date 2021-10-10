@@ -30,11 +30,15 @@ def home_page():
         init_time = datetime.datetime.now()
         cursor.execute(query)
         results = cursor.fetchall()
+        attributes = []
+        description = cursor.description
+        for i in description:
+            attributes.append(i[0])
         cursor.close()
         connection.close()
         end_time = datetime.datetime.now()
         time_elapsed = end_time - init_time
-        return render_template('index.html', data=results, time=time_elapsed, selection=request.form)
+        return render_template('index.html', data=results, attributes=attributes, time=time_elapsed, selection=request.form)
     return render_template('index.html')
 
 
