@@ -1,81 +1,115 @@
 <!DOCTYPE html>
-<html>
-<head>
 
-  <meta charset="utf-8">
 
-  <title>Database Query</title>
+<html >
+  <head>
+    <link rel="icon" href="data:,">
+    <meta charset="utf-8">
 
-  <style>
-  table, tr, td{
-    border: 1px solid black;
-    border-collapse: collapse;
-  }
-  input, label{
-    margin-bottom: 10px;
-  }
-</style>
+    <title>Database Query</title>
 
-<script type="text/javascript">
-  function retainValue(){
-    {% if selection %}
-    {% if selection['database'] == 'mysql'%}
-    document.getElementById('mysql').checked = true;
-    {% else %}
-    document.getElementById('redshift').checked = true;
-    {% endif %}
-    {% if selection['dataset'] == 'instacart'%}
-    document.getElementById('instacart').checked = true;
-    {% else %}
-    document.getElementById('instacart_normalized').checked = true;
-    {% endif %}
-    document.getElementById('query').value = "{{ selection['query'] }}"
-    {% endif %} 
-  }
-</script>
+    <style>
 
-<link rel="shortcut icon" href="data:image/x-icon;," type="image/x-icon"> 
+      table, tr, td{
+        border: 1px solid black;
+        border-collapse: collapse;
+      }
 
-</head>
+      input, label{
+        margin-bottom: 10px;
+      }
 
-<body onload="retainValue()">
+      body {
+        background-color: #97F4FA;
+        text-align: left;
+      }
 
-  <form method="POST" action="">
+      input[type=submit] {
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 12px;
+        background-color: white;
+        color: black;
+        border: 2px solid #4CAF50; /* Green */
+        transition-duration: 0.4s;
+      }
 
-    <p>Please select a database:</p>
+      input[type=submit]:hover {
+        background-color: #4CAF50; /* Green */
+        color: white;
+      }
 
-    <input type="radio" id="mysql" name="database" value="mysql" required>
-    <label for="mysql">MySQL</label><br>
+      header {
+        background-color: #4CAF50;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
 
-    <input type="radio" id="redshift" name="database" value="redshift">
-    <label for="redshift">Redshift</label>
+    </style>
 
-    <p>Please select a dataset:</p>
+    <script type="text/javascript">
+      function retainValue(){
+        {% if selection %}
+        {% if selection['database'] == 'mysql'%}
+          document.getElementById('mysql').checked = true;
+        {% else %}
+          document.getElementById('redshift').checked = true;
+        {% endif %}
+        {% if selection['dataset'] == 'instacart'%}
+          document.getElementById('instacart').checked = true;
+        {% else %}
+          document.getElementById('instacart_normalized').checked = true;
+        {% endif %}
+          document.getElementById('query').value = "{{ selection['query'] }}"
+        {% endif %}
+      }
+    </script>
 
-    <input type="radio" id="instacart" name="dataset" value="instacart" required>
-    <label for="instacart">instacart</label><br>
+  </head>
 
-    <input type="radio" id="instacart_normalized" name="dataset" value="instacart_normalized">
-    <label for="instacart_normalized">instacart_normalized</label><br><br>
+  <body onload="retainValue()">
 
-    <label for="query">Please enter your query:</label>
-    <input type="text" id="query" name="query" />
+    <h2 style="text-align: center">Database Query</h2>
+    <hr style="height:2px;border-width:0;color:gray;background-color:gray">
 
-    <input type="submit" />
+    <form method="POST" action="">
 
-  </form>
+      <p><b>Please select a database:</b></p>
 
-  <p>Execution time: {{time}}</p>
+      <input type="radio" id="mysql" name="database" value="mysql" required checked>
+      <label for="mysql">MySQL</label><br>
 
-  <table>
-    {% for i in data %}
-    <tr>
-      {% for j in i%}
-      <td> {{j}} </td>
+      <input type="radio" id="redshift" name="database" value="redshift">
+      <label for="redshift">Redshift</label>
+
+      <p><b>Please select a dataset:</b></p>
+
+      <input type="radio" id="instacart" name="dataset" value="instacart" required checked>
+      <label for="instacart">instacart</label><br>
+
+      <input type="radio" id="instacart_normalized" name="dataset" value="instacart_normalized">
+      <label for="instacart_normalized">instacart_normalized</label><br><br>
+
+      <label for="query"><b>Please enter your query:</b></label>
+      <p></p>
+      <textarea id="query" name="query" placeholder="Enter your query here..." cols="100" rows="10" ></textarea>
+      <p></p>
+      <input type="submit" value="Execute" />
+      <!--<button type="submit"><b>Execute</b></button>-->
+    </form>
+
+    <p><b>Execution time: {{time}}</b></p>
+
+    <table>
+      {% for i in data %}
+      <tr>
+        {% for j in i%}
+        <td> {{j}} </td>
+        {% endfor %}
+      </tr>
       {% endfor %}
-    </tr>
-    {% endfor %}
-  </table>
-
-</body>
+    </table>
+  </body>
 </html>
