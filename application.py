@@ -38,7 +38,8 @@ def home_page():
         connection.close()
         end_time = datetime.datetime.now()
         time_elapsed = end_time - init_time
-        return render_template('index.html', data=results, attributes=attributes, time=time_elapsed, selection=request.form)
+        query = query.replace('\r\n', '?')
+        return render_template('index.html', data=results, attributes=attributes, time=time_elapsed, selection=request.form, input_query=query)
     return render_template('index.html')
 
 
