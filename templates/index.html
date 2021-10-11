@@ -97,7 +97,7 @@
           {% else %}
             document.getElementById('instacart_normalized').checked = true;
           {% endif %}
-          document.getElementById('query').innerHTML = "{{ input_query }}".replace("?", "&#13");
+          document.getElementById('query').innerHTML = "{{ input_query }}".replaceAll("?", "&#13");
         {% endif %}
       }
     </script>
