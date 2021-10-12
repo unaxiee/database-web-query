@@ -220,17 +220,23 @@
 
           $('.pg').hide();
           $(".ell").remove();
-          var prevpg = $("#pg" + page).show();
+
+          var prepg = $("#pg" + page).show();
           var currpg = $("#pg" + (page + 1)).show();
           var nextpg = $("#pg" + (page + 2)).show();
-          if (prevpg.length == 0) nextpg = $("#pg" + (page + 3)).show();
-          if (prevpg.length == 1 && nextpg.length == 0) {
-            prevpg = $("#pg" + (page - 1)).show();
-          }
-          if (curr > 5) {
-            if (page > 1) prevpg.before($("<li class='ell'>").html("<span>...</span>"));
-            if (page < curr - 2) nextpg.after($("<li class='ell'>").html("<span>...</span>"));
-          }
+
+          var preprepg = $("#pg" + (page - 1)).show()
+          var nextnextpg = $("#pg" + (page + 3)).show()
+
+          //if (prepg.length == 0) nextnextpg = $("#pg" + (page + 4)).show();
+          //if (preprepg.length == 1 && nextnextpg.length == 0) {
+          //  preprepg = $("#pg" + (page - 1)).show();
+          //}
+
+          //if (curr > 5) {
+          if (page > 2) preprepg.before($("<li class='ell'>").html("<span>...</span>"));
+          if (page < curr - 3) nextnextpg.after($("<li class='ell'>").html("<span>...</span>"));
+          //}
           currpg.addClass("active").siblings().removeClass("active");
           // Added few lines till here end
 
