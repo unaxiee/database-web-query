@@ -85,15 +85,17 @@
 
     <script type="text/javascript">
       function retainValue(){
-        {% if database == 'mysql' %}
-        document.getElementById('mysql').checked = true;
-        {% else %}
-        document.getElementById('redshift').checked = true;
-        {% endif %}
-        {% if dataset == 'instacart_normalized' %}
-        document.getElementById('instacart_normalized').checked = true;
-        {% else %}
-        document.getElementById('instacart').checked = true;
+        {% if database %}
+          {% if database == 'mysql' %}
+          document.getElementById('mysql').checked = true;
+          {% else %}
+          document.getElementById('redshift').checked = true;
+          {% endif %}
+          {% if dataset == 'instacart_normalized' %}
+          document.getElementById('instacart_normalized').checked = true;
+          {% else %}
+          document.getElementById('instacart').checked = true;
+          {% endif %}
         {% endif %}
         document.getElementById('query').innerHTML = "{{ query }}".replaceAll("?", "&#13");
       }
