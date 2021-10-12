@@ -30,6 +30,7 @@ def home_page():
         init_time = datetime.datetime.now()
         cursor.execute(query)
         results = cursor.fetchall()
+        num = cursor.rowcount
         attributes = []
         description = cursor.description
         for i in description:
@@ -39,7 +40,7 @@ def home_page():
         end_time = datetime.datetime.now()
         time_elapsed = end_time - init_time
         query = query.replace('\r\n', '?')
-        return render_template('index.html', data=results, attributes=attributes, time=time_elapsed, selection=request.form, input_query=query)
+        return render_template('index.html', data=results, attributes=attributes, num=num, time=time_elapsed, selection=request.form, input_query=query)
     return render_template('index.html')
 
 
