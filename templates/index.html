@@ -1,7 +1,6 @@
 <!DOCTYPE html>
-
-
 <html >
+
   <head>
 
     <meta charset="utf-8">
@@ -57,13 +56,13 @@
         font-size: 12px;
         background-color: white;
         color: black;
-        border: 2px solid #2E86C1; /* #4CAF50;  Green */
+        border: 2px solid #2E86C1; /* #4CAF50 Green */
         transition-duration: 0.4s;
         margin-left: 50px;
       }
 
       input[type=submit]:hover {
-        background-color: #2E86C1; /*#4CAF50;  Green */
+        background-color: #2E86C1; /*#4CAF50 Green */
         color: white;
       }
 
@@ -86,19 +85,17 @@
 
     <script type="text/javascript">
       function retainValue(){
-        {% if selection %}
-          {% if selection['database'] == 'mysql'%}
-            document.getElementById('mysql').checked = true;
-          {% else %}
-            document.getElementById('redshift').checked = true;
-          {% endif %}
-          {% if selection['dataset'] == 'instacart'%}
-            document.getElementById('instacart').checked = true;
-          {% else %}
-            document.getElementById('instacart_normalized').checked = true;
-          {% endif %}
-          document.getElementById('query').innerHTML = "{{ input_query }}".replaceAll("?", "&#13");
+        {% if database == 'mysql' %}
+        document.getElementById('mysql').checked = true;
+        {% else %}
+        document.getElementById('redshift').checked = true;
         {% endif %}
+        {% if dataset == 'instacart_normalized' %}
+        document.getElementById('instacart_normalized').checked = true;
+        {% else %}
+        document.getElementById('instacart').checked = true;
+        {% endif %}
+        document.getElementById('query').innerHTML = "{{ query }}".replaceAll("?", "&#13");
       }
     </script>
 
@@ -312,21 +309,20 @@
       <!--<button type="submit"><b>Execute</b></button>-->
     </form>
 
-    <p class="c1"><b>Execution time: {{time}}</b></p>
-    <p class="c1"><b>{{text}}</b></p>
+    <p class="c1"><b>Execution time: {{ time }}</b></p>
+    <p class="c1"><b>{{ num }}</b></p>
 
-    <!--<table id="table" cellspacing="0" width="100%">-->
     <table class="tb_pagination_width" cellspacing="0">
       <thead>
-        {% for i in attributes %}
-        <th>{{i}}</th>
+        {% for i in table_head %}
+        <th>{{ i }}</th>
         {% endfor %}
       </thead>
       <tbody id="myTable">
-        {% for i in data %}
+        {% for i in table_data %}
         <tr>
           {% for j in i%}
-          <td> {{j}} </td>
+          <td> {{ j }} </td>
           {% endfor %}
         </tr>
         {% endfor %}

@@ -9,25 +9,27 @@ application = Flask(__name__)
 def home_page():
     try:
         if (request.method == 'POST'):
-            if (request.form['database'] == 'mysql'):
-                if (request.form['dataset'] == 'instacart_normalized'):
+            database = request.form['database']
+            dataset = request.form['dataset']
+            if (database == 'mysql'):
+                if (dataset == 'instacart_normalized'):
                     connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
                                                          database='instacart_normalized',
                                                          user='mysql2021',
                                                          password='mysql2021')
-                elif (request.form['dataset'] == 'instacart'):
+                elif (dataset == 'instacart'):
                     connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
                                                          database='instacart',
                                                          user='mysql2021',
                                                          password='mysql2021')
-            elif (request.form['database'] == 'redshift'):
-                if (request.form['dataset'] == 'instacart_normalized'):
+            elif (database == 'redshift'):
+                if (dataset == 'instacart_normalized'):
                     connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
                                                   database='instacart_normalized',
                                                   user='redshift2021',
                                                   password='Redshift2021',
                                                   port="5439")
-                elif (request.form['dataset'] == 'instacart'):
+                elif (dataset == 'instacart'):
                     connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
                                                   database='instacart',
                                                   user='redshift2021',
@@ -40,35 +42,28 @@ def home_page():
             end_time = datetime.datetime.now()
 
             if (query[0:6].lower() == 'select' or query[0:4].lower() == 'show'):
-                data = cursor.fetchall()
-                attributes = []
-                description = cursor.description
-                for i in description:
-                    attributes.append(i[0])
-                text = 'Number of records: ' + str(cursor.rowcount)
-                #cursor.close()
-                #connection.close()
-                #end_time = datetime.datetime.now()
-                #time_elapsed = end_time - init_time
-                #query = query.replace('\r\n', '?')
-                #return render_template('index.html', data=results, attributes=attributes, num=num, time=time_elapsed, selection=request.form, input_query=query)
+                table_head = []
+                column_name = cursor.description
+                for i in column_name:
+                    table_head.append(i[0])
+                table_data = cursor.fetchall()
+                num = 'Number of records: ' + str(cursor.rowcount)
             else:
                 connection.commit()
-                attributes = ['Query', 'Execution result']
-                data = [[query, 'Finished']]
-                text = 'Number of records: 1'
+                table_head = ['Query', 'Execution result']
+                table_data = [[query, 'Finished']]
+                num = 'Number of records: 1'
 
             cursor.close()
             connection.close()
-            time_elapsed = end_time - init_time
+            time = end_time - init_time
             query = query.replace('\r\n', '?')
             
-            return render_template('index.html', data=data, attributes=attributes, text=text, time=time_elapsed, selection=request.form, input_query=query)
+            return render_template('index.html', table_head=table_head, table_data=table_data, num=num, time=time, database=database, dataset=dataset, query=query)
                 #return '<h1><br>Executed query: {Done}</br><br>Time Elapsed: {time}</br></h1>'.format(Done=query,time=time_elapsed)
     
     except Exception as e:
-        query = request.form['query'].replace('\r\n', '?')
-        return render_template('index.html', data=[[request.form['query'], 'Failed', e]], attributes=['Query', 'Execution result', 'Error message'], text='Number of records: 1', time='NA', selection=request.form, input_query=query)
+        return render_template('index.html', table_head=['Query', 'Execution result', 'Error message'], table_data=[[request.form['query'], 'Failed', e]], num='Number of records: 1', time='NA', database=request.form['database'], dataset=request.form['dataset'], query=request.form['query'].replace('\r\n', '?'))
         #return '<h1>{error}</h1>'.format(error=e)
 
     return render_template('index.html')
