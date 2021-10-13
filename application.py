@@ -41,7 +41,7 @@ def home_page():
             cursor.execute(query)
             end_time = datetime.datetime.now()
 
-            if (query[0:6].lower() == 'select' or query[0:4].lower() == 'show'):
+            if (query[0:6].lower() == 'select' or query[0:4].lower() == 'show' or query[0:8].lower() == 'describe'):
                 table_head = []
                 column_name = cursor.description
                 for i in column_name:
