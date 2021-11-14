@@ -12,26 +12,37 @@ def home_page():
             database = request.form['database']
             dataset = request.form['dataset']
             if (database == 'mysql'):
-                if (dataset == 'instacart_normalized'):
+                if (dataset == 'adnimerge'):
+                    connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
+                                                         database='db2',
+                                                         user='mysql2021',
+                                                         password='mysql2021')
+                elif (dataset == 'instacart_normalized'):
                     connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
                                                          database='instacart_normalized',
                                                          user='mysql2021',
                                                          password='mysql2021')
-                elif (dataset == 'adnimerge'):
+                elif (dataset == 'instacart'):
                     connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
                                                          database='instacart',
                                                          user='mysql2021',
                                                          password='mysql2021')
             elif (database == 'redshift'):
-                if (dataset == 'instacart_normalized'):
+                if (dataset == 'adnimerge'):
+                    connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
+                                                  database='adnimerge',
+                                                  user='redshift2021',
+                                                  password='Redshift2021',
+                                                  port="5439")
+                elif (dataset == 'instacart_normalized'):
                     connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
                                                   database='instacart_normalized',
                                                   user='redshift2021',
                                                   password='Redshift2021',
                                                   port="5439")
-                elif (dataset == 'adnimerge'):
+                elif (dataset == 'instacart'):
                     connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
-                                                  database='adnimerge',
+                                                  database='instacart',
                                                   user='redshift2021',
                                                   password='Redshift2021',
                                                   port="5439")

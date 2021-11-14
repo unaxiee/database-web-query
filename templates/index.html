@@ -91,7 +91,9 @@
           {% else %}
           document.getElementById('redshift').checked = true;
           {% endif %}
-          {% if dataset == 'instacart_normalized' %}
+          {% if dataset == 'adnimerge' %}
+          document.getElementById('adnimerge').checked = true;
+          {% elif dataset == 'instacart_normalized' %}
           document.getElementById('instacart_normalized').checked = true;
           {% else %}
           document.getElementById('instacart').checked = true;
@@ -297,11 +299,14 @@
 
       <p class="c1"><b>Please select a database:</b></p>
 
-      <input type="radio" id="instacart_normalized" name="dataset" value="instacart_normalized" style="margin-left: 50px" required checked>
+      <input type="radio" id="adnimerge" name="dataset" value="adnimerge" style="margin-left: 50px" required checked>
+      <label for="adnimerge">adnimerge</label><br>
+
+      <input type="radio" id="instacart_normalized" name="dataset" value="instacart_normalized" style="margin-left: 50px">
       <label for="instacart_normalized">instacart_normalized</label><br>
 
-      <input type="radio" id="adnimerge" name="dataset" value="adnimerge" style="margin-left: 50px">
-      <label for="adnimerge">adnimerge</label><br><br>
+      <input type="radio" id="instacart" name="dataset" value="instacart" style="margin-left: 50px">
+      <label for="instacart">instacart</label><br><br>
 
       <label for="query" style="margin-left: 50px"><b>Please enter your query:</b></label>
       <p></p>
