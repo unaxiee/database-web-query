@@ -17,7 +17,7 @@ def home_page():
                                                          database='instacart_normalized',
                                                          user='mysql2021',
                                                          password='mysql2021')
-                elif (dataset == 'instacart'):
+                elif (dataset == 'adnimerge'):
                     connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
                                                          database='instacart',
                                                          user='mysql2021',
@@ -29,9 +29,9 @@ def home_page():
                                                   user='redshift2021',
                                                   password='Redshift2021',
                                                   port="5439")
-                elif (dataset == 'instacart'):
+                elif (dataset == 'adnimerge'):
                     connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
-                                                  database='instacart',
+                                                  database='adnimerge',
                                                   user='redshift2021',
                                                   password='Redshift2021',
                                                   port="5439")
