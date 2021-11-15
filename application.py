@@ -14,7 +14,7 @@ def home_page():
             if (database == 'mysql'):
                 if (dataset == 'adnimerge'):
                     connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
-                                                         database='db2',
+                                                         database='adnimerge',
                                                          user='mysql2021',
                                                          password='mysql2021')
                 elif (dataset == 'instacart_normalized'):
