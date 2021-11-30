@@ -86,7 +86,9 @@
     <script type="text/javascript">
       function retainValue(){
         {% if database %}
-          {% if database == 'mysql' %}
+          {% if database == 'mongodb' %}
+          document.getElementById('mongodb').checked = true;
+          {% elif database == 'mysql' %}
           document.getElementById('mysql').checked = true;
           {% else %}
           document.getElementById('redshift').checked = true;
@@ -291,7 +293,10 @@
 
       <p class="c1"><b>Please select a database management system:</b></p>
 
-      <input type="radio" id="mysql" name="database" value="mysql" style="margin-left: 50px" required checked>
+      <input type="radio" id="mongodb" name="database" value="mongodb" style="margin-left: 50px" required checked>
+      <label for="mysql">MongoDB</label><br>
+
+      <input type="radio" id="mysql" name="database" value="mysql" style="margin-left: 50px">
       <label for="mysql">MySQL</label><br>
 
       <input type="radio" id="redshift" name="database" value="redshift" style="margin-left: 50px">
