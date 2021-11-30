@@ -10,8 +10,10 @@ application = Flask(__name__)
 def home_page():
     try:
         if (request.method == 'POST'): 
+
             database = request.form['database']
             dataset = request.form['dataset']
+            
             if (database == 'mysql'):
                 if (dataset == 'adnimerge'):
                     connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
