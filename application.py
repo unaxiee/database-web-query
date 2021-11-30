@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import mysql.connector
 import psycopg2
 import datetime
+from pydrill.client import PyDrill
 
 application = Flask(__name__)
 
@@ -12,13 +13,15 @@ def home_page():
             database = request.form['database']
             dataset = request.form['dataset']
             if (database == 'mongodb'):
+                drill = PyDrill(host='localhost', port=8047)
+                result = drill.query('show databases', timeout=60)
+                query = result.data
                 table_head=[]
                 table_data=[]
                 num=str(1)
-                time=str(2)
+                time=str(1)
                 database=database
                 dataset=dataset
-                query=request.form['query']
             else:
                 if (database == 'mysql'):
                     if (dataset == 'adnimerge'):
