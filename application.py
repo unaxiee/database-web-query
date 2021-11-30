@@ -10,8 +10,10 @@ application = Flask(__name__)
 def home_page():
     try:
         if (request.method == 'POST'): 
+
             database = request.form['database']
             dataset = request.form['dataset']
+            
             if (database == 'mongodb'):
                 drill = PyDrill(host='localhost', port=8047)
                 query = request.form['query']
