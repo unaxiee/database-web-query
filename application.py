@@ -14,16 +14,19 @@ def home_page():
             dataset = request.form['dataset']
             if (database == 'mongodb'):
                 drill = PyDrill(host='localhost', port=8047)
-                if drill.is_active():
-                    query = 'yes'
-                else:
-                    query = 'no'
-                table_head=[]
-                table_data=[]
-                num=str(1)
-                time=str(1)
-                database=database,
-                dataset=dataset
+                query = request.form['query']
+                init_time = datetime.datetime.now()
+                result = drill.query(query, timeout=60)
+                end_time = datetime.datetime.now()
+                table_head = []
+                for i in result.columns:
+                    table_head.append(i)
+                table_data = []
+                for i in result.rows:
+                    table_data.append(list(i.values()))
+                time = end_time - init_time
+                num = 'Number of records: ' + str(len(result.rows))
+                query = query.replace('\r\n', '?')
 
             else:
 
