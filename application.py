@@ -13,13 +13,14 @@ def home_page():
             database = request.form['database']
             dataset = request.form['dataset']
             if (database == 'mongodb'):
-                drill = PyDrill(host='localhost', port=8047)
-                result = drill.query('show databases', timeout=60)
-                query = result.data
+                #drill = PyDrill(host='localhost', port=8047)
+                #result = drill.query('show databases', timeout=60)
+                #query = result.data
                 table_head=[]
                 table_data=[]
                 num=str(1)
                 time=str(1)
+                query = 'bug'
                 database=database
                 dataset=dataset
             else:
