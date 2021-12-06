@@ -20,14 +20,21 @@ def home_page():
                 init_time = datetime.datetime.now()
                 result = drill.query(query, timeout=60)
                 end_time = datetime.datetime.now()
-                table_head = []
-                for i in result.columns:
-                    table_head.append(i)
-                table_data = []
-                for i in result.rows:
-                    table_data.append(list(i.values()))
+                print(result.data)
+                #print(tuple(result.rows[0].values()))
+                if (result.data['queryState'] == 'COMPLETED'):
+                    table_head = []
+                    for i in result.columns:
+                        table_head.append(i)
+                    table_data = []
+                    for i in result.rows:
+                        table_data.append(tuple(i.values()))
+                    num = 'Number of records: ' + str(len(result.rows))
+                else:
+                    table_head = ['queryId','queryState']
+                    table_data = [[result.data['queryId'], result.data['queryState']]]
+                    num = 'Number of records: 1'
                 time = end_time - init_time
-                num = 'Number of records: ' + str(len(result.rows))
                 query = query.replace('\r\n', '?')
 
             else:
