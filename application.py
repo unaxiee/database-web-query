@@ -72,50 +72,83 @@ def home_page():
                         time = 'NA'
                 query = query.replace('\r\n', '?')    
 
-            else:
-
-                if (database == 'mysql'):
-                    if (dataset == 'adnimerge'):
-                        connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
-                                                             database='adnimerge',
-                                                             user='mysql2021',
-                                                             password='mysql2021')
-                    elif (dataset == 'instacart_normalized'):
-                        connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
-                                                             database='instacart_normalized',
-                                                             user='mysql2021',
-                                                             password='mysql2021')
-                    elif (dataset == 'instacart'):
-                        connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
-                                                             database='instacart',
-                                                             user='mysql2021',
-                                                             password='mysql2021')
-                elif (database == 'redshift'):
-                    if (dataset == 'adnimerge'):
-                        connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
-                                                      database='adnimerge',
-                                                      user='redshift2021',
-                                                      password='Redshift2021',
-                                                      port="5439")
-                    elif (dataset == 'instacart_normalized'):
-                        connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
-                                                      database='instacart_normalized',
-                                                      user='redshift2021',
-                                                      password='Redshift2021',
-                                                      port="5439")
-                    elif (dataset == 'instacart'):
-                        connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
-                                                      database='instacart',
-                                                      user='redshift2021',
-                                                      password='Redshift2021',
-                                                      port="5439")
+            elif (database == 'mysql'):
+                if (dataset == 'adnimerge'):
+                    connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
+                                                         database='adnimerge',
+                                                         user='mysql2021',
+                                                         password='mysql2021')
+                elif (dataset == 'instacart_normalized'):
+                    connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
+                                                         database='instacart_normalized',
+                                                         user='mysql2021',
+                                                         password='mysql2021')
+                elif (dataset == 'instacart'):
+                    connection = mysql.connector.connect(host='mysql2021.c7wtal8gxuuf.us-east-2.rds.amazonaws.com',
+                                                         database='instacart',
+                                                         user='mysql2021',
+                                                         password='mysql2021')
                 cursor = connection.cursor()
-                #query = request.form['query']
+                init_time = datetime.datetime.now()
+                iterator = cursor.execute(query, multi=True)
+                end_time = datetime.datetime.now()
+                table_head = []
+                table_data = []
+                num = 'NA'
+
+                for result in iterator:
+                    print(result.statement)
+                    if result.with_rows:
+                        table_head = []
+                        column_name = result.description
+                        for i in column_name:
+                            table_head.append(i[0])
+                        table_data = result.fetchall()
+                        num = 'Number of records: ' + str(result.rowcount)
+                        
+                # if (query[0:6].lower() == 'select' or query[0:4].lower() == 'show' or query[0:8].lower() == 'describe'):
+                if table_head == []:
+                    table_head = ['Query', 'Execution result']
+                    table_data = [[query, 'Finished']]
+                    num = 'Number of records: 1'
+
+                connection.commit()
+                cursor.close()
+                connection.close()
+                time = end_time - init_time
+                query = query.replace('\r\n', '?')
+
+                    
+            elif (database == 'redshift'):
+                if (dataset == 'adnimerge'):
+                    connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
+                                                  database='adnimerge',
+                                                  user='redshift2021',
+                                                  password='Redshift2021',
+                                                  port="5439")
+                elif (dataset == 'instacart_normalized'):
+                    connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
+                                                  database='instacart_normalized',
+                                                  user='redshift2021',
+                                                  password='Redshift2021',
+                                                  port="5439")
+                elif (dataset == 'instacart'):
+                    connection = psycopg2.connect(host='redshift2021.cxixtqv0g2ru.us-east-2.redshift.amazonaws.com',
+                                                  database='instacart',
+                                                  user='redshift2021',
+                                                  password='Redshift2021',
+                                                  port="5439")
+                
+                cursor = connection.cursor()
                 init_time = datetime.datetime.now()
                 cursor.execute(query)
                 end_time = datetime.datetime.now()
+                table_data = []
+                num = 'NA'
 
-                if (query[0:6].lower() == 'select' or query[0:4].lower() == 'show' or query[0:8].lower() == 'describe'):
+                print(cursor.description)
+                
+                if (cursor.description != None):
                     table_head = []
                     column_name = cursor.description
                     for i in column_name:
@@ -123,11 +156,11 @@ def home_page():
                     table_data = cursor.fetchall()
                     num = 'Number of records: ' + str(cursor.rowcount)
                 else:
-                    connection.commit()
                     table_head = ['Query', 'Execution result']
                     table_data = [[query, 'Finished']]
                     num = 'Number of records: 1'
 
+                connection.commit()
                 cursor.close()
                 connection.close()
                 time = end_time - init_time
