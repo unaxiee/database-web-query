@@ -13,29 +13,64 @@ def home_page():
 
             database = request.form['database']
             dataset = request.form['dataset']
+            query = request.form['query']
             
             if (database == 'mongodb'):
-                drill = PyDrill(host='localhost', port=8047)
-                query = request.form['query']
-                init_time = datetime.datetime.now()
-                result = drill.query(query, timeout=60)
-                end_time = datetime.datetime.now()
-                print(result.data)
-                #print(tuple(result.rows[0].values()))
-                if (result.data['queryState'] == 'COMPLETED'):
-                    table_head = []
-                    for i in result.columns:
-                        table_head.append(i)
-                    table_data = []
-                    for i in result.rows:
-                        table_data.append(tuple(i.values()))
-                    num = 'Number of records: ' + str(len(result.rows))
+
+                if query[-1] == ';':
+                    query = query[:-1]
+
+                if query.lower().startswith('select'):
+                    table = query[query.find('from')+5:].split(' ')[0]                
+                    if (table == 'adnimerge_fact_table' and dataset =='adnimerge') or (table == 'instacart_fact_table' and dataset != 'adnimerge'):
+                        if (dataset == 'adnimerge'):
+                            query_new = query.replace('adnimerge_fact_table', 'mongo.adnimerge.adnimerge_fact_table')
+                        else:
+                            query_new = query.replace('instacart_fact_table', 'mongo.instacart.instacart_fact_table')
+                        drill = PyDrill(host='localhost', port=8047)
+                        init_time = datetime.datetime.now()
+                        result = drill.query(query_new, timeout=300)
+                        end_time = datetime.datetime.now()
+                        if (result.data['queryState'] == 'COMPLETED'):
+                            table_head = []
+                            for i in result.columns:
+                                table_head.append(i)
+                            table_data = []
+                            for i in result.rows:
+                                table_data.append(tuple(i.values()))
+                            num = 'Number of records: ' + str(len(result.rows))
+                            time = end_time - init_time
+                        else:
+                            table_head = ['queryId','queryState']
+                            table_data = [[result.data['queryId'], result.data['queryState']]]
+                            num = 'Number of records: 1'
+                            time = 'NA'                       
+                    else:
+                        table_head = ['Error']
+                        table_data = [["Table '" + table + "' doesn't exist in '" + dataset + "' database."]]
+                        num = 'Number of records: 1'
+                        time = 'NA'
+
                 else:
-                    table_head = ['queryId','queryState']
-                    table_data = [[result.data['queryId'], result.data['queryState']]]
-                    num = 'Number of records: 1'
-                time = end_time - init_time
-                query = query.replace('\r\n', '?')
+                    drill = PyDrill(host='localhost', port=8047)
+                    init_time = datetime.datetime.now()
+                    result = drill.query(query, timeout=300)
+                    end_time = datetime.datetime.now()
+                    if (result.data['queryState'] == 'COMPLETED'):
+                        table_head = []
+                        for i in result.columns:
+                            table_head.append(i)
+                        table_data = []
+                        for i in result.rows:
+                            table_data.append(tuple(i.values()))
+                        num = 'Number of records: ' + str(len(result.rows))
+                        time = end_time - init_time
+                    else:
+                        table_head = ['queryId','queryState']
+                        table_data = [[result.data['queryId'], result.data['queryState']]]
+                        num = 'Number of records: 1'
+                        time = 'NA'
+                query = query.replace('\r\n', '?')    
 
             else:
 
@@ -75,7 +110,7 @@ def home_page():
                                                       password='Redshift2021',
                                                       port="5439")
                 cursor = connection.cursor()
-                query = request.form['query']
+                #query = request.form['query']
                 init_time = datetime.datetime.now()
                 cursor.execute(query)
                 end_time = datetime.datetime.now()
