@@ -97,7 +97,6 @@ def home_page():
                 num = 'NA'
 
                 for result in iterator:
-                    print(result.statement)
                     if result.with_rows:
                         table_head = []
                         column_name = result.description
@@ -145,8 +144,6 @@ def home_page():
                 end_time = datetime.datetime.now()
                 table_data = []
                 num = 'NA'
-
-                print(cursor.description)
                 
                 if (cursor.description != None):
                     table_head = []
