@@ -27,7 +27,7 @@ def home_page():
                             query_new = query.replace('adnimerge_fact_table', 'mongo.adnimerge.adnimerge_fact_table')
                         else:
                             query_new = query.replace('instacart_fact_table', 'mongo.instacart.instacart_fact_table')
-                        drill = PyDrill(host='localhost', port=8047)
+                        drill = PyDrill(host='ec2-13-59-21-150.us-east-2.compute.amazonaws.com', port=8047)
                         init_time = datetime.datetime.now()
                         result = drill.query(query_new, timeout=300)
                         end_time = datetime.datetime.now()
@@ -52,7 +52,7 @@ def home_page():
                         time = 'NA'
 
                 else:
-                    drill = PyDrill(host='localhost', port=8047)
+                    drill = PyDrill(host='ec2-13-59-21-150.us-east-2.compute.amazonaws.com', port=8047)
                     init_time = datetime.datetime.now()
                     result = drill.query(query, timeout=300)
                     end_time = datetime.datetime.now()
